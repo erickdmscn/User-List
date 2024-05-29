@@ -10,7 +10,7 @@ Sistema FullStack de Gestão de Usuários.
 
 
 ```shell
-cd frontend
+cd backend
 ```
 
 ```shell
