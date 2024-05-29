@@ -25,7 +25,7 @@ npm run dev
 
 
 ```shell
-cd web
+cd frontend
 ```
 
 ```shell
