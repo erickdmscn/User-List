@@ -15,7 +15,7 @@ interface User{
 const users: User[] = []
 
 app.get('/users', (request, response) => {
-    return response.json(['user1', 'user2'])
+    return response.json(user)
 })
 
 app.put('/users:id', (request, response) => {
