@@ -1,6 +1,6 @@
 # 📝 Lista de Usuários
 
-**Sistema FullStack para Gestão de Usuários**, oferecendo funcionalidades para cadastro, visualização e remoção de usuários, com um frontend moderno usando Vue.js e um backend robusto baseado em Express.js.
+**Sistema FullStack para Gestão de Usuários**, oferecendo funcionalidades para cadastro, visualização e remoção de usuários, com um frontend moderno usando Vue.js e um backend robusto baseado em Express.js, integrado com um banco de dados MongoDB para persistência de dados.
 
 ## 🚀 Como Iniciar o Sistema
 
