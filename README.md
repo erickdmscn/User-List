@@ -27,7 +27,7 @@ npm install
 npm run dev
 ```
 
-##🛠️ Tecnologias Empregadas
+## 🛠️ Tecnologias Empregadas
 Este projeto foi desenvolvido com as seguintes tecnologias:
 
 •Vue.js
