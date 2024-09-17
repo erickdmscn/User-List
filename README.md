@@ -30,6 +30,7 @@ npm run dev
 ## 🛠️ Tecnologias Empregadas
 Este projeto foi desenvolvido com as seguintes tecnologias:
 
-•Vue.js
-•TypeScript
-•Node.js
+#### Vue.js
+#### TypeScript
+#### Node.js
+#### MongoDB
