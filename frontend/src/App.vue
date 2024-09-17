@@ -1,80 +1,69 @@
 <template>
-  <div class="users">
-    <div class="container">
-      <section>
-        <h5 class="title">Novo usuário</h5>
-        <form @submit.prevent="createUser">
-          <input type="text" placeholder="Nome" v-model="form.name" required>
-          <input type="email" placeholder="E-mail" v-model="form.email" required>
-          <button type="submit">Adicionar</button>
-        </form>
-      </section>
-      <section>
-        <h5 class="title">Lista de usuários</h5>
-        <ul>
-          <li v-for="user in users" :key="user.id">
-            <p>{{ user.name }}</p>
-            <small>{{ user.email }}</small>
-            <a @click="destroyUser(user.id)" href="#" class="destroy"></a>
-          </li>
-        </ul>
-      </section>
-    </div>
+  <div class="container">
+    <h1>Cadastro de Usuários</h1>
+
+    <form @submit.prevent="registerUser" class="form">
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" v-model="newUser.email" required class="input" />
+      </div>
+      <div class="form-group">
+        <label for="name">Nome:</label>
+        <input type="name" v-model="newUser.name" required class="input" />
+      </div>
+      <button type="submit" class="button">Cadastrar</button>
+    </form>
+
+    <h2>Usuários Cadastrados</h2>
+    <ul class="user-list">
+      <li v-for="user in users" :key="user._id" class="user-item">
+        {{ user.email }}
+      </li>
+    </ul>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
-import axios from '@/utils/axios'
-import { User } from '@/models/User'
+import { defineComponent, ref } from 'vue'
+import apiClient from 'axios'
+
+interface User {
+  _id: string
+  email: string
+  password: string
+}
 
 export default defineComponent({
-  data() {
-    return {
-      users: [] as User[],
-      form: {
-        name: '',
-        email: ''
+  name: 'UserComponent',
+  setup() {
+    const newUser = ref<{ email: string; name: string }>({ email: '', name: '' })
+    const users = ref<User[]>([])
+
+    const fetchUsers = async () => {
+      try {
+        const response = await apiClient.get<User[]>('/api/users')
+        users.value = response.data;
+      } catch (error) {
+        console.error('Erro ao buscar usuários:', error)
       }
     }
-  },
 
-  created(){
-    this.fetchUsers()
-  },
-
-  methods:{
-    async fetchUsers(){
+    const registerUser = async () => {
       try {
-        const { data } = await axios.get('/users')
-        this.users = data
+        await apiClient.post('/api/users', newUser.value)
+        newUser.value = { email: '', name: '' } 
+        await fetchUsers() 
       } catch (error) {
-        console.warn(error)
+        console.error('Erro ao criar usuário:', error)
       }
-    },
+    };
+    
+    fetchUsers()
 
-    async createUser(){
-      try {
-        const { data } = await axios.post('/users', this.form)
-        this.users.push(data)
-
-        this.form.name = ''
-        this.form.email = ''
-      } catch (error) {
-        console.warn(error)
-      }
-    },
-
-    async destroyUser(id: User['id']){
-      try {
-        await axios.delete(`/users/${id}`)
-
-        const userIndex = this.users.findIndex((user) => user.id === id)
-
-        this.users.splice(userIndex, 1)
-      } catch (error) {
-        console.warn(error)
-      }
+    return {
+      newUser,
+      users,
+      registerUser
     }
   }
 })
@@ -82,108 +71,75 @@ export default defineComponent({
 
 <style scoped>
 .container {
-  margin: 4rem auto;
-  max-width: 500px;
-  width: 90%;
-  display: grid;
-  grid-gap: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  max-width: 600px;
+  margin: auto;
 }
 
-.title {
+h1,
+h2 {
+  margin-bottom: 1rem;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 400px;
+  margin-bottom: 2rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+}
+
+label {
+  margin-bottom: 0.5rem;
   font-size: 1rem;
-  font-weight: 500;
-  margin: 0.7rem 0;
 }
 
-form {
-  display: grid;
-  grid-gap: 1rem;
+.input {
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 0.25rem;
 }
 
-input {
-  background: transparent;
-  border: 1px solid #999fc6;
-  border-radius: 1rem;
-  padding: 0.6rem;
-  outline: none;
-  color: #e1e8ef;
-}
-
-input::placeholder {
-  color: #999fc6;
-}
-
-button {
-  background-color: #2d6cea;
-  color: #e1e8ef;
+.button {
+  padding: 0.75rem;
+  font-size: 1rem;
+  color: #fff;
+  background-color: #007bff;
   border: none;
-  border-radius: 1rem;
-  padding: 0.6rem 1.5rem;
-  width: max-content;
-  transition: all 0.3s linear;
-  outline: none;
+  border-radius: 0.25rem;
   cursor: pointer;
-  box-shadow: 0 0 5px 3px rgba(45, 108, 234, 0.3);
+  transition: background-color 0.3s ease;
 }
 
-button:hover {
-  background-color: #1b5cdc;
+.button:hover {
+  background-color: #0056b3;
 }
 
-p {
-  margin: 0;
-}
-
-ul {
+.user-list {
+  list-style: none;
   padding: 0;
   margin: 0;
-  display: grid;
-  grid-gap: 1rem;
+  width: 100%;
+  max-width: 400px;
 }
 
-li {
-  background-color: #2b3a4e;
-  padding: 1.2rem 1rem;
-  border-radius: 1rem;
-  position: relative;
-  list-style: none;
-  color: #8b98a8;
+.user-item {
+  padding: 0.5rem;
+  border-bottom: 1px solid #eee;
+  font-size: 1rem;
 }
 
-.destroy {
-  background-color: #d53e6b;
-  width: 24px;
-  height: 24px;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  transition: all 0.2s linear;
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  right: 1.3rem;
-}
-
-.destroy:before,
-.destroy:after {
-  content: '';
-  width: 3px;
-  height: 13px;
-  background-color: #ececf6;
-  border-radius: 1rem;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-}
-
-.destroy:before {
-  transform: translate(-50%, -50%) rotate(45deg);
-}
-
-.destroy:after {
-  transform: translate(-50%, -50%) rotate(130deg);
-}
-
-.destroy:hover {
-  background-color: #984848;
+.user-item:last-child {
+  border-bottom: none;
 }
 </style>

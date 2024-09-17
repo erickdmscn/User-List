@@ -2,7 +2,7 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.ts",
   "scripts": {
     "dev": "ts-node-dev --quiet --clear ./src/server.ts"
   },
@@ -11,14 +11,18 @@
   "license": "ISC",
   "devDependencies": {
     "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/validator": "^13.12.1",
     "ts-node-dev": "^2.0.0",
-    "typescript": "^5.4.5"
+    "typescript": "^5.5.4"
   },
   "dependencies": {
-    "@types/express": "^4.17.21",
     "@types/uuid": "^9.0.8",
     "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
     "express": "^4.19.2",
-    "uuid": "^9.0.1"
+    "mongoose": "^8.6.0",
+    "uuid": "^9.0.1",
+    "validator": "^13.12.0"
   }
 }
