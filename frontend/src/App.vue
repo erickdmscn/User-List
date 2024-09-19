@@ -17,7 +17,9 @@
     <h2>Usuários Cadastrados</h2>
     <ul class="user-list">
       <li v-for="user in users" :key="user._id" class="user-item">
-        {{ user.email }}
+        <p>{{ user.email }}</p>
+        <p>{{ user.name }}</p>
+        <button @click="destroyUser(user._id)" class="destroy-button">Excluir</button>
       </li>
     </ul>
   </div>
@@ -30,7 +32,7 @@ import apiClient from 'axios'
 interface User {
   _id: string
   email: string
-  password: string
+  name: string
 }
 
 export default defineComponent({
@@ -42,7 +44,7 @@ export default defineComponent({
     const fetchUsers = async () => {
       try {
         const response = await apiClient.get<User[]>('/api/users')
-        users.value = response.data;
+        users.value = response.data
       } catch (error) {
         console.error('Erro ao buscar usuários:', error)
       }
@@ -51,19 +53,29 @@ export default defineComponent({
     const registerUser = async () => {
       try {
         await apiClient.post('/api/users', newUser.value)
-        newUser.value = { email: '', name: '' } 
-        await fetchUsers() 
+        newUser.value = { email: '', name: '' }
+        await fetchUsers()
       } catch (error) {
         console.error('Erro ao criar usuário:', error)
       }
-    };
-    
+    }
+
+    const destroyUser = async (userId: string) => {
+      try {
+        await apiClient.delete(`/api/users/${userId}`)
+        await fetchUsers()
+      } catch (error) {
+        console.error('Erro ao deletar usuário:', error)
+      }
+    }
+
     fetchUsers()
 
     return {
       newUser,
       users,
-      registerUser
+      registerUser,
+      destroyUser
     }
   }
 })
@@ -128,18 +140,28 @@ label {
 .user-list {
   list-style: none;
   padding: 0;
-  margin: 0;
-  width: 100%;
-  max-width: 400px;
 }
 
 .user-item {
-  padding: 0.5rem;
-  border-bottom: 1px solid #eee;
-  font-size: 1rem;
+  display: flex;
+  justify-content: space-between; /* Nome e botão ao lado */
+  align-items: center;
+  background-color: #f4f4f4;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 5px;
 }
 
-.user-item:last-child {
-  border-bottom: none;
+.destroy-button {
+  background-color: red;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.destroy-button:hover {
+  background-color: darkred;
 }
 </style>
