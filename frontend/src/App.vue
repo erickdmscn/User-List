@@ -17,8 +17,10 @@
     <h2>Usuários Cadastrados</h2>
     <ul class="user-list">
       <li v-for="user in users" :key="user._id" class="user-item">
-        <p>{{ user.email }}</p>
-        <p>{{ user.name }}</p>
+        <div class="user-info">
+          <p>Nome: {{ user.name }}</p>
+          <p>E-mail: {{ user.email }}</p>
+        </div>
         <button @click="destroyUser(user._id)" class="destroy-button">Excluir</button>
       </li>
     </ul>
@@ -142,26 +144,49 @@ label {
   padding: 0;
 }
 
+.user-list {
+  list-style: none;
+  padding: 0;
+}
+
 .user-item {
   display: flex;
-  justify-content: space-between; /* Nome e botão ao lado */
+  justify-content: space-between;
   align-items: center;
-  background-color: #f4f4f4;
-  margin-bottom: 10px;
-  padding: 10px;
-  border-radius: 5px;
+  background-color: #007bff;
+  margin-bottom: 1.5rem; 
+  padding: 1.5rem; 
+  border-radius: 0.75rem; 
+  font-size: 1.25rem; 
+  gap: 3.3rem
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column; 
+  gap: 0.5rem; 
+}
+
+.user-item p {
+  margin: 0;
 }
 
 .destroy-button {
   background-color: red;
   color: white;
   border: none;
-  border-radius: 5px;
-  padding: 5px 10px;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
   cursor: pointer;
+  transition: background-color 0.3s ease; /* Adiciona uma transição suave */
 }
 
 .destroy-button:hover {
   background-color: darkred;
+}
+
+.destroy-button:active {
+  background-color: #63419b; /* Torna o botão mais claro ao clicar */
 }
 </style>
