@@ -1,15 +1,34 @@
-import { Request, Response } from 'express'
-import { UserModel, IUser } from './UserModel'
+import { Request, Response } from 'express';
+import {UserModel, IUser} from './UserModel';
+import validator from 'validator';
 
-export const createUser = async (req: Request, res: Response): Promise<void> => {
+export const createUser = async (req: Request, res: Response): Promise<Response> => { // Altere Promise<void> para Promise<Response>
   try {
-    const { email, name } = req.body
-    const newUser = new UserModel({ email, name })
-    await newUser.save()
-    res.status(201).json({ message: 'Usuário criado com sucesso', newUser })
+    const { email, name } = req.body;
+
+    // Verificar se o e-mail é válido
+    if (!validator.isEmail(email)) {
+      return res.status(400).json({ message: 'E-mail inválido' });
+    }
+
+    // Verificar se o e-mail já está cadastrado
+    const existingUser = await UserModel.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ message: 'E-mail já existente' });
+    }
+
+    const trimmedName = name.trim();
+    if (!trimmedName || trimmedName.length < 3 || trimmedName.length > 50 || !/^[a-zA-Z\s'-]+$/.test(trimmedName)) {
+      return res.status(400).json({ message: 'Utilize um nome válido' });
+    }
+    // Criar novo usuário
+    const newUser = new UserModel({ email, name });
+    await newUser.save();
+
+    return res.status(201).json({ message: 'Usuário criado com sucesso', newUser });
   } catch (error) {
     console.error('Erro ao criar usuário:', error);
-    res.status(500).json({ message: 'Erro ao criar usuário', error })
+    return res.status(500).json({ message: 'Erro ao criar usuário', error });
   }
 }
 

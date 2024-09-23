@@ -9,9 +9,10 @@
       </div>
       <div class="form-group">
         <label for="name">Nome:</label>
-        <input type="name" v-model="newUser.name" required class="input" />
+        <input type="text" v-model="newUser.name" required class="input" />
       </div>
       <button type="submit" class="button">Cadastrar</button>
+      <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
     </form>
 
     <h2>Usuários Cadastrados</h2>
@@ -42,6 +43,7 @@ export default defineComponent({
   setup() {
     const newUser = ref<{ email: string; name: string }>({ email: '', name: '' })
     const users = ref<User[]>([])
+    const errorMessage = ref<string | null>(null)
 
     const fetchUsers = async () => {
       try {
@@ -54,11 +56,17 @@ export default defineComponent({
 
     const registerUser = async () => {
       try {
+        errorMessage.value = null
+
         await apiClient.post('/api/users', newUser.value)
         newUser.value = { email: '', name: '' }
         await fetchUsers()
-      } catch (error) {
-        console.error('Erro ao criar usuário:', error)
+      } catch (error: any) {
+        if (error.response && error.response.data) {
+          errorMessage.value = error.response.data.message
+        } else {
+          errorMessage.value = 'Erro ao criar usuário. Tente novamente.'
+        }
       }
     }
 
@@ -76,6 +84,7 @@ export default defineComponent({
     return {
       newUser,
       users,
+      errorMessage,
       registerUser,
       destroyUser
     }
@@ -139,6 +148,12 @@ label {
   background-color: #0056b3;
 }
 
+.error-message {
+  margin-bottom: -1.9rem; 
+  min-height: 0.5rem; 
+}
+
+
 .user-list {
   list-style: none;
   padding: 0;
@@ -179,14 +194,14 @@ label {
   padding: 0.75rem 1.5rem;
   font-size: 1rem;
   cursor: pointer;
-  transition: background-color 0.3s ease; /* Adiciona uma transição suave */
+  transition: background-color 0.3s ease; 
 }
 
 .destroy-button:hover {
-  background-color: darkred;
+  background-color: rgb(112, 16, 16);
 }
 
 .destroy-button:active {
-  background-color: #63419b; /* Torna o botão mais claro ao clicar */
+  background-color: #f75252; 
 }
 </style>
