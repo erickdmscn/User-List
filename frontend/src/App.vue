@@ -39,7 +39,6 @@ interface User {
 }
 
 export default defineComponent({
-  name: 'UserComponent',
   setup() {
     const newUser = ref<{ email: string; name: string }>({ email: '', name: '' })
     const users = ref<User[]>([])
@@ -149,37 +148,39 @@ label {
 }
 
 .error-message {
-  margin-bottom: -1.9rem; 
+  margin-bottom: -2rem; 
   min-height: 0.5rem; 
 }
 
-
 .user-list {
   list-style: none;
   padding: 0;
-}
-
-.user-list {
-  list-style: none;
-  padding: 0;
+  width: 100%; 
 }
 
 .user-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #007bff;
-  margin-bottom: 1.5rem; 
-  padding: 1.5rem; 
+  background-color: #ffffff; 
+  border: 1px solid #9ad0e6; 
   border-radius: 0.75rem; 
-  font-size: 1.25rem; 
-  gap: 3.3rem
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra leve */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Efeitos de transição */
+  margin-bottom: 1rem; /* Espaçamento inferior */
+}
+
+.user-item:hover {
+  transform: translateY(-5px); /* Levanta o bloco ao passar o mouse */
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15); /* Aumenta a sombra ao passar o mouse */
 }
 
 .user-info {
   display: flex;
   flex-direction: column; 
   gap: 0.5rem; 
+  color: #333; 
 }
 
 .user-item p {
@@ -187,21 +188,22 @@ label {
 }
 
 .destroy-button {
-  background-color: red;
+  background-color: #ff5c5c; 
   color: white;
   border: none;
   border-radius: 0.5rem;
   padding: 0.75rem 1.5rem;
   font-size: 1rem;
   cursor: pointer;
-  transition: background-color 0.3s ease; 
+  transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 .destroy-button:hover {
-  background-color: rgb(112, 16, 16);
+  background-color: #ff2b2b;
 }
 
 .destroy-button:active {
-  background-color: #f75252; 
+  background-color: #e60000; 
+  transform: scale(0.95); 
 }
 </style>
