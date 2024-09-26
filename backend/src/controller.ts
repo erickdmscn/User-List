@@ -2,7 +2,7 @@ import { Request, Response } from 'express'
 import {UserModel, IUser} from './UserModel'
 import validator from 'validator'
 
-export const createUser = async (req: Request, res: Response): Promise<Response> => { // Altere Promise<void> para Promise<Response>
+export const createUser = async (req: Request, res: Response): Promise<Response> => { 
   try {
     const { email, name } = req.body
 
