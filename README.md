@@ -33,4 +33,5 @@ Este projeto foi desenvolvido com as seguintes tecnologias:
 #### Vue.js
 #### TypeScript
 #### Node.js
+#### Express.js
 #### MongoDB
