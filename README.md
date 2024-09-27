@@ -27,7 +27,7 @@ npm run dev
 
 ### 🖥️ Frontend
 
-Acesse a pasta frontend, instale as dependências e inicie o servidor de desenvolvimento:
+Acesse a pasta `frontend`, instale as dependências e inicie o servidor de desenvolvimento:
 
 ```bash
 cd frontend
