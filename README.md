@@ -6,6 +6,14 @@
 
 Siga as instruções abaixo para instalar as dependências e iniciar os servidores:
 
+### 🗄️ Configuração do MongoDB
+
+Para rodar o banco de dados, você precisa ter sua própria instância do MongoDB. A string de conexão deve ser definida na variável de ambiente `CONNECTIONSTRING`. No arquivo `.env`, você pode especificá-la da seguinte forma:
+
+```bash
+CONNECTIONSTRING=mongodb://seu-usuario:senha@seu-host/seu-banco
+```
+
 ### ⚙️ Backend
 
 Acesse a pasta `backend`, instale as dependências e inicie o servidor de desenvolvimento:
